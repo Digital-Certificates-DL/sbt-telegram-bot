@@ -1,0 +1,33 @@
+configVersion: 1
+project: 'backend'
+---
+image: builder
+from: golang:1.16.2-stretch
+docker:
+  WORKDIR: /go/src/gitlab.com/tokend/course-certificates/sbt-svc
+git:
+- add: /
+  to: /go/src/gitlab.com/tokend/course-certificates/sbt-svc
+  stageDependencies:
+    setup:
+    - "**/*"
+shell:
+  setup:
+  - export CGO_ENABLED=0
+  - export GO111MODULE=off
+  - export GOOS=linux
+  - go build  -o /usr/local/bin/sbt-svc  /go/src/gitlab.com/tokend/course-certificates/sbt-svc
+
+---
+image: service
+from: alpine:3.9
+docker:
+  ENTRYPOINT: sbt-svc
+shell:
+  setup:
+  - apk add --no-cache ca-certificates
+import:
+- image: builder
+  add: /usr/local/bin/sbt-svc
+  to: /usr/local/bin/sbt-svc
+  after: setup
