@@ -12,7 +12,7 @@ import (
 func ClaimCertificate(w http.ResponseWriter, r *http.Request) {
 	req, err := requests.NewClaimCertificateRequest(r)
 	if err != nil {
-		helpers.Log(r).Error(errors.Wrap(err, "failed to parse date"))
+		helpers.Log(r).Error(errors.Wrap(err, "failed to parse date:"))
 		ape.RenderErr(w, problems.BadRequest(err)...)
 		return
 	}
@@ -25,7 +25,7 @@ func ClaimCertificate(w http.ResponseWriter, r *http.Request) {
 	helpers.Log(r).Info(bot.Info)
 	err = bot.SendToAdmin()
 	if err != nil {
-		helpers.Log(r).Error(errors.Wrap(err, "failed to send messages"))
+		helpers.Log(r).Error(errors.Wrap(err, "failed to send messages:"))
 		ape.RenderErr(w, problems.InternalError())
 		return
 	}
