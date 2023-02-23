@@ -4,8 +4,8 @@ import (
 	"github.com/alecthomas/kingpin"
 	"gitlab.com/distributed_lab/kit/kv"
 	"gitlab.com/distributed_lab/logan/v3"
-	"gitlab.com/tokend/course-certificates/sbt-svc/internal/config"
-	"gitlab.com/tokend/course-certificates/sbt-svc/internal/service"
+	"gitlab.com/tokend/course-certificates/sbt-bot/internal/config"
+	"gitlab.com/tokend/course-certificates/sbt-bot/internal/service"
 )
 
 func Run(args []string) bool {
@@ -20,7 +20,7 @@ func Run(args []string) bool {
 	cfg := config.New(kv.MustFromEnv())
 	log = cfg.Log()
 
-	app := kingpin.New("sbt-svc", "")
+	app := kingpin.New("sbt-bot", "")
 
 	runCmd := app.Command("run", "run command")
 	serviceCmd := runCmd.Command("service", "run service") // you can insert custom help
@@ -41,6 +41,9 @@ func Run(args []string) bool {
 		log.Errorf("unknown command %s", cmd)
 		return false
 	}
-
+	if err != nil {
+		log.WithError(err).Error("failed to exec cmd")
+		return false
+	}
 	return true
 }

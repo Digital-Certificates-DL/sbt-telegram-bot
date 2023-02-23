@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"gitlab.com/tokend/course-certificates/sbt-svc/internal/cli"
+	"gitlab.com/tokend/course-certificates/sbt-bot/internal/cli"
 )
 
 func main() {

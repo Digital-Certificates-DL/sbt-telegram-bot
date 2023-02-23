@@ -1,23 +1,17 @@
 log:
-  level: info
+  level: debug
   disable_sentry: true
 
 
-networks:
-  rpc_eth: "https://goerli.infura.io/v3/45efc27205e746adb3a1d6c3da69a7ba"
-  ipfs: "https://ipfs.infura.io:5001"
-  ipfs_pr_id: "2LgGs3QZ5Ndz065ZVu4xoSTWzcU"
-  ipfs_pr_key: "4afcd5182cb6e849fa72726d44f77186"
+bot:
+  token: "6091782696:AAHHibjlkaeG5wgr1AhDKH1ycJ3SUQvRB3E"
 
-wallet:
-  address: "0xa6D07e4b7C95A361c4eec38C87c603c1b936A369"
-  private_key: "f264a42ab88c3f9f70dba9c37d4fdb7cf86c1626f8c146ed47f6c68aaa6a270c"
+listener:
+  addr: :8787
 
-contract:
-  address: "0x0c4487b8a9dcB460C864293146D2056e2E53c680"
-  gas_limit: 300000
-
-
-
-
-
+cop:
+  disabled: true
+  endpoint: "http://..."
+  upstream: "http://..."
+  service_name: sbt-bot
+  service_port: 80

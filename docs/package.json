@@ -1,5 +1,5 @@
 {
-  "name": "sbt-svc",
+  "name": "sbt-bot",
   "version": "1.0.0",
   "dependencies": {
     "@tokend/redoc-cli": "^0.9.9",
