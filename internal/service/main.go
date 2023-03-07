@@ -23,7 +23,7 @@ type service struct {
 func (s *service) run() error {
 	s.log.Info("Service started")
 
-	botAPI, err := bot.NewBotInit(s.cfg.BotConfig().Token, s.log)
+	botAPI, err := bot.NewBotInit(s.cfg.BotConfig().Token, s.log, s.cfg.BotConfig().Msg)
 	if err != nil {
 		return errors.Wrap(err, "failed to init bot")
 	}

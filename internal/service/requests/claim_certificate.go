@@ -17,7 +17,6 @@ type ClaimCertificateDate struct {
 
 func NewClaimCertificateRequest(r *http.Request) (ClaimCertificateDate, error) {
 	request := ClaimCertificateDate{}
-
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		return ClaimCertificateDate{}, errors.Wrap(err, "failed to decode request")
 	}

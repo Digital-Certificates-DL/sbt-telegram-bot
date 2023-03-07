@@ -13,6 +13,7 @@ type BotConfiger interface {
 
 type BotConfig struct {
 	Token string `fig:"token"`
+	Msg   string `fig:"msg"`
 }
 
 func NewBotConfiger(getter kv.Getter) BotConfiger {
@@ -34,7 +35,6 @@ func (c *tokenConfig) BotConfig() *BotConfig {
 		if err != nil {
 			panic(errors.Wrap(err, "failed to figure out"))
 		}
-
 		return &config
 	}).(*BotConfig)
 }
