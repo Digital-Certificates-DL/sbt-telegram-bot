@@ -10,6 +10,8 @@ import (
 	"sync"
 )
 
+const timeout = 60
+
 type Bot struct {
 	Info     UserInfo
 	token    string
@@ -70,7 +72,7 @@ func (b *Bot) PrepareLastMessage() string {
 func (b *Bot) Start(wg *sync.WaitGroup) error {
 	defer wg.Done()
 	u := tgbot.NewUpdate(0)
-	u.Timeout = 60
+	u.Timeout = timeout
 	ctx, cancel := context.WithCancel(context.Background())
 	updates := b.Bot.GetUpdatesChan(u)
 	err := b.receiveUpdates(ctx, updates)
@@ -87,12 +89,11 @@ func (b *Bot) receiveUpdates(ctx context.Context, updates tgbot.UpdatesChannel) 
 		case <-ctx.Done():
 			return nil
 		case update, ok := <-updates:
-			if ok {
-				b.handleUpdate(update)
-			} else {
+			if !ok {
 				ctx.Done()
 				return errors.New("failed to read from chan")
 			}
+			b.handleUpdate(update)
 		}
 	}
 }
