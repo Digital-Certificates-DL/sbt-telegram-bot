@@ -1,0 +1,18 @@
+log:
+  level: debug
+  disable_sentry: true
+
+
+bot:
+  msg: "student: %s\nexam date: %s\ncourse: %s\naddress: %s\ntelegram: %s"
+  token: "6091782696:AAHHibjlkaeG5wgr1AhDKH1ycJ3SUQvRB3E"
+
+listener:
+  addr: :8787
+
+cop:
+  disabled: true
+  endpoint: "http://..."
+  upstream: "http://..."
+  service_name: sbt-bot
+  service_port: 80
