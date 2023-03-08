@@ -10,7 +10,7 @@ import (
 	"sync"
 )
 
-const timeout = 60
+const timeoutInSec = 60
 
 type Bot struct {
 	Info     UserInfo
@@ -43,11 +43,12 @@ func NewBotInit(token string, logger *logan.Entry, template string) (*Bot, error
 
 }
 
-func (b *Bot) NewInfo(name, date, address, tg string) UserInfo {
+func (b *Bot) NewInfo(name, date, address, course, tg string) UserInfo {
 	userInfo := UserInfo{
 		Date:     date,
 		Name:     name,
 		Address:  address,
+		Course:   course,
 		Telegram: tg,
 	}
 	return userInfo
@@ -72,7 +73,7 @@ func (b *Bot) PrepareLastMessage() string {
 func (b *Bot) Start(wg *sync.WaitGroup) error {
 	defer wg.Done()
 	u := tgbot.NewUpdate(0)
-	u.Timeout = timeout
+	u.Timeout = timeoutInSec
 	ctx, cancel := context.WithCancel(context.Background())
 	updates := b.Bot.GetUpdatesChan(u)
 	err := b.receiveUpdates(ctx, updates)

@@ -18,7 +18,7 @@ func ClaimCertificate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	bot := helpers.Bot(r)
-	bot.Info = bot.NewInfo(req.Name, req.Date, req.Address, req.Telegram)
+	bot.Info = bot.NewInfo(req.Name, req.Date, req.Address, req.CourseName, req.Telegram)
 	helpers.Log(r).Info(bot.Info)
 	err = bot.SendToAdmin()
 	if err != nil {
