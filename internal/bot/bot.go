@@ -60,8 +60,17 @@ func (b *Bot) SendToAdmin() error {
 		msg.ParseMode = tgbot.ModeMarkdownV2
 		_, err := b.Bot.Send(msg)
 		if err != nil {
+			if strings.Contains(err.Error(), "bot was blocked by the user") {
+				isAdmin := b.checkAdmin(b.Admins, chatID)
+				if isAdmin {
+					b.Admins = b.deleteAdmin(b.Admins, chatID)
+					b.Logger.Debug("Admin was deleted: ", chatID)
+				}
+				return nil
+			}
 			return errors.Wrap(err, fmt.Sprint("failed to send date to: ", chatID))
 		}
+		b.Logger.Debug("Admins", b.Admins)
 	}
 	return nil
 }
@@ -121,12 +130,19 @@ func (b *Bot) handleMessage(message *tgbot.Message) {
 	return
 }
 
-func (b *Bot) handleCommand(chatId int64, command string) {
+func (b *Bot) handleCommand(chatID int64, command string) {
 	switch command {
 	case "/admin":
-		isAdmin := b.checkAdmin(b.Admins, chatId)
+		isAdmin := b.checkAdmin(b.Admins, chatID)
 		if !isAdmin {
-			b.Admins = append(b.Admins, chatId)
+			b.Admins = append(b.Admins, chatID)
+		}
+		b.Logger.Debug(b.Admins)
+		break
+	case "/exit":
+		isAdmin := b.checkAdmin(b.Admins, chatID)
+		if isAdmin {
+			b.Admins = b.deleteAdmin(b.Admins, chatID)
 		}
 		b.Logger.Debug(b.Admins)
 		break
@@ -140,4 +156,14 @@ func (b *Bot) checkAdmin(sl []int64, name int64) bool {
 		}
 	}
 	return false
+}
+
+func (b *Bot) deleteAdmin(sl []int64, name int64) []int64 {
+	res := make([]int64, 0)
+	for _, value := range sl {
+		if value != name {
+			res = append(res, value)
+		}
+	}
+	return res
 }
